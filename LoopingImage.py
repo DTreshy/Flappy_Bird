@@ -13,15 +13,14 @@ class LoopingImage:
         self.velocity = velocity
 
     def draw(self):
-        Vars.screen.blit(self.image, (self.x[0], self.y))
-        Vars.screen.blit(self.image, (self.x[1], self.y))
+        for i in range(0, 2):
+            Vars.screen.blit(self.image, (round(self.x[i]), self.y))
 
     def move(self):
-        self.x[0] -= self.velocity
-        self.x[1] -= self.velocity
-        for i in range (0, 2):
-            if self.x[i] < -self.width:
-                self.x[i] = self.width - 1
+        for i in range(0, 2):
+            self.x[i] -= self.velocity
+            if self.x[i] <= -self.width:
+                self.x[i] = self.width - 5
 
 
 class Floor(LoopingImage):
@@ -31,4 +30,4 @@ class Floor(LoopingImage):
         floor_mask = pygame.mask.from_surface(self.image)
         offset = (-1, self.y - round(bird.y))
         if bird_mask.overlap(floor_mask, offset):
-            Vars.running = False
+            Vars.lose = True

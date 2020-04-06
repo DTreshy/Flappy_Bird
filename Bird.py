@@ -20,10 +20,6 @@ def blitRotateCenter(surf, image, topleft, angle):
 class Bird:
 
     IMAGES = Vars.bird_images
-    MAX_ROTATION = 28
-    ANIMATION_TIME = 5
-    ROTATION_VEL = 20
-    MAX_VELOCITY = 20
 
     def __init__(self, x, y):
         self.x = x
@@ -34,10 +30,15 @@ class Bird:
         self.cur_image = 0
         self.img = self.IMAGES[self.cur_image]
         self.animation_timer = 0
+        self.max_up_rotation = Vars.BIRD_MAX_UP_ROTATION
+        self.max_down_rotation = Vars.BIRD_MAX_DOWN_ROTATION
+        self.animation_time = Vars.BIRD_ANIMATION_TIME
+        self.rotation_vel = Vars.BIRD_ROTATION_VEL
+        self.max_velocity = Vars.BIRD_MAX_VELOCITY
 
     def draw(self):
         self.animation_timer += 1
-        self.cur_image = math.floor(self.animation_timer / self.ANIMATION_TIME)
+        self.cur_image = math.floor(self.animation_timer / self.animation_time)
         if self.cur_image == len(self.IMAGES):
             self.cur_image = 0
             self.animation_timer = 0
@@ -46,22 +47,24 @@ class Bird:
         blitRotateCenter(Vars.screen, self.img, (self.x, self.y), self.cur_rotation)
 
     def rotate(self):
-        self.cur_rotation = self.velocity * -3.8
-        if self.cur_rotation > self.MAX_ROTATION:
-            self.cur_rotation = self.MAX_ROTATION
-        elif self.cur_rotation <= -60:
-            self.cur_rotation = -60
+        self.cur_rotation = self.velocity * -self.rotation_vel
+        if self.cur_rotation > self.max_up_rotation:
+            self.cur_rotation = self.max_up_rotation
+        elif self.cur_rotation <= -self.max_down_rotation:
+            self.cur_rotation = -self.max_down_rotation
             self.cur_image = 1
 
     def move(self):
         self.tick_count += 1
         self.velocity += 0.01 * self.tick_count ** 1.9
-        if self.velocity > self.MAX_VELOCITY:
-            self.velocity = self.MAX_VELOCITY
+        if self.velocity > self.max_velocity:
+            self.velocity = self.max_velocity
         self.y += self.velocity
+        if self.y < 0:
+            self.y = 0
 
     def jump(self):
-        self.velocity = -self.MAX_VELOCITY + 2
+        self.velocity = -self.max_velocity + 2
         self.tick_count = 0
 
     def get_mask(self):
