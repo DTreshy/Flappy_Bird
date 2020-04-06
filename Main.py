@@ -1,13 +1,15 @@
 import pygame
 import Vars
-from LoopingImage import LoopingImage
+from LoopingImage import LoopingImage, Floor
 import Pipe
 from Bird import Bird
 
 
 class Game:
 
-    BACKGROUND_VEL = 10
+    BACKGROUND_VEL = 1
+    FLOOR_VEL = 2
+    FLOOR_HEIGHT = 120
     BIRD_X = 60
     BIRD_Y = 250
 
@@ -16,7 +18,8 @@ class Game:
         pygame.display.set_caption("Flappy Bird")
         self.score = 0
         self.bird = Bird(self.BIRD_X, self.BIRD_Y)
-        self.background = LoopingImage(0, Vars.background_img, self.BACKGROUND_VEL)
+        self.background = LoopingImage(Vars.WIN_HEIGHT, Vars.background_img, self.BACKGROUND_VEL)
+        self.floor = Floor(self.FLOOR_HEIGHT, Vars.Floor_img, self.FLOOR_VEL)
         self.fpsClock = pygame.time.Clock()
 
         while Vars.running:
@@ -33,10 +36,13 @@ class Game:
                     self.bird.jump()
         self.bird.move()
         self.background.move()
+        self.floor.move()
+        self.floor.collide(self.bird)
 
     def draw(self):
         Vars.screen.fill(Vars.BLACK)
         self.background.draw()
+        self.floor.draw()
         self.bird.draw()
         pygame.display.update()
 

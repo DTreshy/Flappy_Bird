@@ -23,7 +23,7 @@ class Bird:
     MAX_ROTATION = 28
     ANIMATION_TIME = 5
     ROTATION_VEL = 20
-    MAX_VELOCITY = 19
+    MAX_VELOCITY = 20
 
     def __init__(self, x, y):
         self.x = x
@@ -65,4 +65,4 @@ class Bird:
         self.tick_count = 0
 
     def get_mask(self):
-        pass
+        return pygame.mask.from_surface(self.img)
