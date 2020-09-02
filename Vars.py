@@ -1,7 +1,11 @@
 import pygame
 import os
 
-
+pygame.init()
+CAPTION = "Flappy Bird"
+pygame.display.set_caption(CAPTION)
+pygame.font.init()
+font1 = pygame.font.Font('Fonts/Roboto.ttf', 45)
 BLACK = (0, 0, 0)
 WIN_HEIGHT = 900
 WIN_WIDTH = 700
@@ -16,7 +20,6 @@ FLOOR_VEL = 7.2
 FLOOR_HEIGHT = 120
 BIRD_START_X = 60
 BIRD_START_Y = 250
-CAPTION = "Flappy Bird"
 BIRD_MAX_UP_ROTATION = 28
 BIRD_MAX_DOWN_ROTATION = 60
 BIRD_ANIMATION_TIME = 4
