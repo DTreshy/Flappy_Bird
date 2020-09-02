@@ -6,6 +6,7 @@ import random
 class Pipe:
 
     IMAGE = Vars.pipe_img
+    WIDTH = IMAGE.get_width()
 
     def __init__(self, x):
         self.x = x

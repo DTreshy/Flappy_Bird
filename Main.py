@@ -11,11 +11,11 @@ class Game:
         pygame.init()
         pygame.display.set_caption(Vars.CAPTION)
         self.bird = Bird(Vars.BIRD_START_X, Vars.BIRD_START_Y)
-        self.pipe = [Pipe(Vars.PIPE_STARTING_X), Pipe(Vars.PIPE_STARTING_X + Vars.PIPE_STARTING_X),
-                     Pipe(Vars.PIPE_STARTING_X + 2 * Vars.PIPE_STARTING_X)]
+        self.pipe = [Pipe(Vars.PIPE_STARTING_X + i * (Vars.PIPE_DISTANCE + Pipe.WIDTH)) for i in range(0, 3)]
         self.background = LoopingImage(Vars.WIN_HEIGHT, Vars.background_img, Vars.BACKGROUND_VEL)
         self.floor = Floor(Vars.FLOOR_HEIGHT, Vars.Floor_img, Vars.FLOOR_VEL)
         self.fpsClock = pygame.time.Clock()
+        self.score = 0
 
         while Vars.running:
             self.run()
@@ -31,10 +31,10 @@ class Game:
             i.move()
             i.collide(self.bird)
         self.floor.collide(self.bird)
-        self.addScore()
+        self.add_score()
         if self.pipe[0].x < 0 - self.pipe[0].IMAGE.get_width():
             self.pipe.pop(0)
-            self.pipe.append(Pipe(self.pipe[-1].x + self.pipe[0].IMAGE.get_width() + Vars.PIPE_DISTANCE))
+            self.pipe.append(Pipe(self.pipe[-1].x + Pipe.WIDTH + Vars.PIPE_DISTANCE))
         if Vars.lose:
             self.lose()
 
@@ -55,17 +55,16 @@ class Game:
                 if event.key == pygame.K_SPACE:
                     self.bird.jump()
 
-    def addScore(self):
+    def add_score(self):
         for i in self.pipe:
             pass
 
     def lose(self):
         self.bird = Bird(Vars.BIRD_START_X, Vars.BIRD_START_Y)
-        self.pipe = [Pipe(Vars.PIPE_STARTING_X), Pipe(Vars.PIPE_STARTING_X + Vars.PIPE_STARTING_X),
-                     Pipe(Vars.PIPE_STARTING_X + 2 * Vars.PIPE_STARTING_X)]
+        self.pipe = self.pipe = [Pipe(Vars.PIPE_STARTING_X + i * (Vars.PIPE_DISTANCE + Pipe.WIDTH)) for i in range(0, 3)]
         self.background = LoopingImage(Vars.WIN_HEIGHT, Vars.background_img, Vars.BACKGROUND_VEL)
         self.floor = Floor(Vars.FLOOR_HEIGHT, Vars.Floor_img, Vars.FLOOR_VEL)
-        Vars.score = 0
+        self.score = 0
         Vars.lose = False
 
 
